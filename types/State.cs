@@ -9,7 +9,8 @@ public enum State
     Fall,
     Landing,
     WallSliding,
-    WallJump
+    WallJump,
+    Walk
 }
 
 

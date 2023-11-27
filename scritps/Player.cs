@@ -1,9 +1,6 @@
 using Godot;
 using static Godot.Mathf;
 using static Godot.GD;
-using System.Text.RegularExpressions;
-using System.Runtime.Serialization.Formatters;
-using System.Reflection.Metadata.Ecma335;
 using System.Linq;
 
 public partial class Player : CharacterBody2D, IStateMachine

@@ -13,29 +13,30 @@ public partial class Enemy : CharacterBody2D
 {
 
     Node2D graphics;
-    AnimationPlayer animationPlayer;
-    StateMachine stateMachine;
+    protected AnimationPlayer animationPlayer;
+    protected StateMachine StateMachine;
     [Export]
-    public float MaxSpeed = 180;
+    public double MaxSpeed = 180;
     [Export]
-    public float Acceleration = 2000;
+    public double Acceleration = 2000;
 
+    private Direction _direction = Direction.Left;
     [Export]
     public Direction Direction
     {
         set
         {
-            Direction = value;
-            graphics.Scale = Direction == Direction.Right ? new Vector2(-1, 1) : new Vector2(1, 1);
+            _direction = value;
+            graphics.Scale = _direction == Direction.Right ? new Vector2(-1, 1) : new Vector2(1, 1);
         }
-        get => Direction;
+        get { return _direction; }
     }
-    float defaultGravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    protected float defaultGravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     public override void _Ready()
     {
         graphics = GetNode<Node2D>("Graphics");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        stateMachine = GetNode<StateMachine>("StateMachine");
+        StateMachine = GetNode<StateMachine>("StateMachine");
     }
 }

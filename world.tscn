@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cpxf4uqyrskt"]
+[gd_scene load_steps=10 format=3 uid="uid://cpxf4uqyrskt"]
 
 [ext_resource type="Script" path="res://scritps/World.cs" id="1_ujpyx"]
 [ext_resource type="PackedScene" uid="uid://d3g7m1xp44x32" path="res://player.tscn" id="2_8imp6"]
 [ext_resource type="Texture2D" uid="uid://otykkq24qkxl" path="res://assets/legacy_fantasy/Background/Background.png" id="3_v7st1"]
 [ext_resource type="Texture2D" uid="uid://c3f5fa4ij56wl" path="res://assets/legacy_fantasy/Trees/Background.png" id="4_qm6lf"]
 [ext_resource type="Texture2D" uid="uid://ctj4l6jjsdopw" path="res://assets/legacy_fantasy/Assets/Tree-Assets.png" id="5_rhsti"]
+[ext_resource type="PackedScene" uid="uid://dcgphcxkdxhxw" path="res://enemies/boar.tscn" id="6_8whm0"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h3pd5"]
 load_path = "res://.godot/imported/Tree-Assets.png-458b6c2f31455ad173aaf2ab32274ad3.ctex"
@@ -670,3 +671,6 @@ texture = ExtResource("5_rhsti")
 centered = false
 region_enabled = true
 region_rect = Rect2(210, 293, 124, 86)
+
+[node name="Boar" parent="." instance=ExtResource("6_8whm0")]
+position = Vector2(624, 142)
