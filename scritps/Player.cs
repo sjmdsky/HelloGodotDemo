@@ -12,7 +12,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     public const float RunSpeed = 160;
     public const float JumpVelocity = -320;
 
-    public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     Node2D graphics;
     StateMachine stateMachine;
