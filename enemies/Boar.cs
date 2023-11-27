@@ -56,7 +56,7 @@ public partial class Boar : Enemy, IStateMachine
                 break;
             case State.Walk:
                 animationPlayer.Play("walk");
-                if (floorChecker.IsColliding()) Direction = (Direction)((int)Direction * -1);
+                if (!floorChecker.IsColliding()) Direction = (Direction)((int)Direction * -1);
                 break;
         }
     }

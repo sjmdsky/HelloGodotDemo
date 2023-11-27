@@ -56,7 +56,7 @@ public partial class Player : CharacterBody2D, IStateMachine
         // Print("HandleVelocity: " + currentState);
         var direction = Input.GetAxis("move_left", "move_right");
         velocity.X = direction * RunSpeed;
-        var canJump = IsOnFloor() || IsOnWall() || coyoteTimer.TimeLeft > 0;
+        var canJump = IsOnFloor() || coyoteTimer.TimeLeft > 0;
         var shouldJump = canJump && jumpRequestTimer.TimeLeft > 0;
 
         // if (!IsZeroApprox(direction)) sprite2D.FlipH = direction < 0;
@@ -85,17 +85,18 @@ public partial class Player : CharacterBody2D, IStateMachine
                 velocity.Y += (gravity / 5) * (float)delta;
                 return velocity;
             case State.WallJump:
-                if (shouldJump)
+                if (IsOnWallOnly() && jumpRequestTimer.TimeLeft > 0)
                 {
-                    Print("WallJump -> start");
+                    Print("WallJump -> shouldJump");
                     velocity.Y = JumpVelocity;
                     // MoveToward(velocity.X, 1000 * GetWallNormal().X, delta * 1000);
-                    velocity.X = 400 * GetWallNormal().X;
+                    velocity.X = RunSpeed * 2 * GetWallNormal().X;
                     jumpRequestTimer.Stop();
                     _isJumped = true;
                     return velocity;
                 }
-                else if (stateMachine.stateTime < 0.1)
+                // else if (stateMachine.stateTime < 0.1)
+                else
                 {
 
                     {
@@ -104,18 +105,28 @@ public partial class Player : CharacterBody2D, IStateMachine
                         velocity.X = 160 * GetWallNormal().X;
                         graphics.Scale = GetWallNormal().X < 0 ? new Vector2(-1, 1) : new Vector2(1, 1);
                         return velocity;
+                        // return move(RunSpeed, delta);
+
                     }
                 }
-                break;
+                // break;
 
         }
         velocity.Y += gravity * (float)delta;
         return velocity;
     }
 
+    Vector2 move(double speed, double delta)
+    {
+        var velocity = Velocity;
+        velocity.X = (float)MoveToward((double)Velocity.X, speed * GetWallNormal().X, 2000 * delta);
+        velocity.Y += gravity / 2 * (float)delta;
+        return velocity;
+    }
     public void TransitionState(State fromState, State toState)
     {
-        Print($"from: {fromState} to: {toState}");
+        var frame = Engine.GetPhysicsFrames();
+        Print($"[{frame}] Player -> from: {fromState} to: {toState}");
         if (!GroundState.Contains(fromState) && !GroundState.Contains(toState)) coyoteTimer.Stop();
         switch (toState)
         {

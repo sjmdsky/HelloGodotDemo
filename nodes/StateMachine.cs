@@ -5,9 +5,9 @@ using static Godot.GD;
 [GlobalClass]
 public partial class StateMachine : Node
 {
-	private State _currentState = State.None;
+	private State _currentState;
 
-	public double stateTime;
+	public double stateTime = 0;
 	IStateMachine owner;
 	public State currentState
 	{
@@ -27,11 +27,11 @@ public partial class StateMachine : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Owner._Ready();
+		Owner._PhysicsProcess(0);
 		// await ToSignal(Owner, "ready");
 		Print($"{Owner} is ready");
 		owner = (IStateMachine)Owner;
-		currentState = State.Idle;
+		// currentState = State.Idle;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,7 +44,7 @@ public partial class StateMachine : Node
 		// 	currentState = next;
 		// }
 		var next = owner.GetNextState(currentState);
-		currentState = next;
+		if (next != currentState) currentState = next;
 		owner.TickPhysics(currentState, delta);
 		stateTime += delta;
 	}

@@ -2,7 +2,6 @@
 
 public enum State
 {
-    None = -1,
     Idle,
     Running,
     Jump,
