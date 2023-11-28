@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using static Godot.GD;
 using static Godot.Mathf;
 public partial class Boar : Enemy, IStateMachine
@@ -19,7 +18,7 @@ public partial class Boar : Enemy, IStateMachine
     }
     public State GetNextState(State currentState)
     {
-        if (playerChecker.IsColliding()) return State.Running;
+        if (playerChecker.GetCollider() is Player) return State.Running;
         switch (currentState)
         {
             case State.Idle:
@@ -69,7 +68,7 @@ public partial class Boar : Enemy, IStateMachine
                 return move(0, delta);
             case State.Running:
                 if (wallChecker.IsColliding() || !floorChecker.IsColliding()) Direction = (Direction)((int)Direction * -1);
-                if (playerChecker.IsColliding()) calmDownTimer.Start();
+                if (playerChecker.GetCollider() is Player) calmDownTimer.Start();
                 return move(MaxSpeed, delta);
 
             case State.Walk:
