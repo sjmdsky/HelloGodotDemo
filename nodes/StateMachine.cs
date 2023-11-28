@@ -27,9 +27,8 @@ public partial class StateMachine : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Owner._PhysicsProcess(0);
 		// await ToSignal(Owner, "ready");
-		Print($"{Owner} is ready");
+		Print($"{Owner.Name} is ready");
 		owner = (IStateMachine)Owner;
 		// currentState = State.Idle;
 	}

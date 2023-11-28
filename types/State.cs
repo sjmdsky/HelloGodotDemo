@@ -9,7 +9,10 @@ public enum State
     Landing,
     WallSliding,
     WallJump,
-    Walk
+    Walk,
+    Attack1,
+    Attack2,
+    Attack3,
 }
 
 
