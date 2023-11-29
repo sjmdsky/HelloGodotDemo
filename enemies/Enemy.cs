@@ -11,7 +11,7 @@ public enum Direction
 public partial class Enemy : CharacterBody2D
 {
 
-    Node2D graphics;
+    public Node2D graphics;
     protected AnimationPlayer animationPlayer;
     protected StateMachine StateMachine;
     [Export]

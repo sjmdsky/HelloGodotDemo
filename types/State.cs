@@ -13,7 +13,8 @@ public enum State
     Attack1,
     Attack2,
     Attack3,
-    Die
+    Hurt,
+    Dying
 }
 
 

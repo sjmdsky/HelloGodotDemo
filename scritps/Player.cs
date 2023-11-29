@@ -1,26 +1,30 @@
 using Godot;
 using static Godot.Mathf;
 using static Godot.GD;
+using static Godot.Color;
 using System.Linq;
 using System;
 
 public partial class Player : CharacterBody2D, IStateMachine
 {
+    const float KockBack = 300;
     public static readonly State[] GroundState = [State.Idle, State.Running, State.Landing, State.Attack1, State.Attack2, State.Attack3];
     public const float RunSpeed = 160;
     public const float JumpVelocity = -320;
 
     float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-    Node2D graphics;
+    public Node2D graphics;
     StateMachine stateMachine;
     // Sprite2D sprite2D;
     AnimationPlayer animationPlayer;
     Timer jumpRequestTimer;
     Timer coyoteTimer;
+    public Timer InvincibleTimer;
 
     RayCast2D handChecker;
     RayCast2D footChecker;
+    States states;
 
     private bool _isJumped = false;
     private bool _isFirstTick = false;
@@ -33,11 +37,13 @@ public partial class Player : CharacterBody2D, IStateMachine
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         jumpRequestTimer = GetNode<Timer>("JumpRequestTimer");
         coyoteTimer = GetNode<Timer>("CoyoteTimer");
+        InvincibleTimer = GetNode<Timer>("InvincibleTimer");
         graphics = GetNode<Node2D>("Graphics");
         handChecker = GetNode<RayCast2D>("Graphics/HandChecker");
         footChecker = GetNode<RayCast2D>("Graphics/FootChecker");
         stateMachine = GetNode<StateMachine>("StateMachine");
-        // velocity = Velocity;
+        states = GetNode<States>("States");
+
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -117,7 +123,14 @@ public partial class Player : CharacterBody2D, IStateMachine
             case State.Attack1 or State.Attack2 or State.Attack3:
                 velocity.X = (float)Decimal.Zero;
                 break;
+            case State.Hurt:
+                Enemy enemy = (Enemy)states.DamageSource;
 
+                velocity.X = enemy.graphics.Scale.X * KockBack * -1;
+                break;
+            case State.Dying:
+                if (!animationPlayer.IsPlaying()) GetTree().ReloadCurrentScene();
+                break;
 
         }
         velocity.Y += gravity * (float)delta;
@@ -165,6 +178,13 @@ public partial class Player : CharacterBody2D, IStateMachine
                 animationPlayer.Play("attack_3");
                 isComboRequested = false;
                 break;
+            case State.Hurt:
+                animationPlayer.Play("hurt");
+                break;
+            case State.Dying:
+                animationPlayer.Play("die");
+                InvincibleTimer.Stop();
+                break;
 
         }
         // Engine.TimeScale = (toState == State.WallJump) ? 0.5 : 1.0;
@@ -174,9 +194,19 @@ public partial class Player : CharacterBody2D, IStateMachine
     public void TickPhysics(State currentState, double delta)
     {
         Velocity = HandleVelocity(currentState, Velocity, delta);
+        var modulate = new Godot.Color(1, 1, 1);
+        if (InvincibleTimer.TimeLeft > 0)
+        {
+            modulate.A = (float)(Sin(Time.GetTicksMsec() / 20) * 0.5 + 0.5);
+            graphics.Modulate = modulate;
+        }
+        else
+        {
+            modulate.A = 1;
+            graphics.Modulate = modulate;
+        }
         var wasOnFloor = IsOnFloor();
-
-        MoveAndSlide();
+        if (currentState is not State.Dying) MoveAndSlide();
         if (IsOnFloor() ^ wasOnFloor)
         {
             if (wasOnFloor)
@@ -198,7 +228,14 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public State GetNextState(State currentState)
     {
-        // Print("GetNextState -> " + currentState);
+
+        if (states.Health <= 0) return State.Dying;
+        if (states.IsOnHit)
+        {
+            InvincibleTimer.Start();
+            states.IsOnHit = false;
+            return State.Hurt;
+        }
         var velocity = Velocity;
         var direction = Input.GetAxis("move_left", "move_right");
         var isStill = IsZeroApprox(direction);
@@ -257,6 +294,9 @@ public partial class Player : CharacterBody2D, IStateMachine
             case State.Attack3:
                 if (!animationPlayer.IsPlaying())
                     return State.Idle;
+                break;
+            case State.Hurt:
+                if (!animationPlayer.IsPlaying()) return State.Idle;
                 break;
 
             default:
