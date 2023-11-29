@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dcgphcxkdxhxw"]
+[gd_scene load_steps=17 format=3 uid="uid://dcgphcxkdxhxw"]
 
 [ext_resource type="PackedScene" uid="uid://c6w1cvbubrnl" path="res://enemies/enemy.tscn" id="1_2ep0q"]
 [ext_resource type="Texture2D" uid="uid://d11ueratg6tn0" path="res://assets/legacy_fantasy/Mob/Boar/Idle/Idle-Sheet.png" id="2_42k3y"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bar74icixcy2m" path="res://assets/legacy_fantasy/Mob/Boar/Hit-Vanish/Hit-Sheet.png" id="3_ild44"]
 [ext_resource type="Texture2D" uid="uid://ncsj0ucpoavn" path="res://assets/legacy_fantasy/Mob/Boar/Walk/Walk-Base-Sheet.png" id="4_eulpu"]
 [ext_resource type="Texture2D" uid="uid://bhjur0f4yy2ul" path="res://assets/legacy_fantasy/Mob/Boar/Run/Run-Sheet.png" id="5_bs1v7"]
+[ext_resource type="PackedScene" uid="uid://c4v0s8kq1utm6" path="res://ui/status_panel.tscn" id="7_bvlr6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4spbo"]
 size = Vector2(31, 6.75)
@@ -379,3 +380,11 @@ one_shot = true
 
 [node name="States" parent="." index="5"]
 MaxHealth = 5
+
+[node name="StatusPanel" parent="." index="6" node_paths=PackedStringArray("states") instance=ExtResource("7_bvlr6")]
+offset_left = -28.0
+offset_top = -57.0
+offset_right = 60.0
+offset_bottom = -31.0
+states = NodePath("../States")
+IsShowAvatar = false
