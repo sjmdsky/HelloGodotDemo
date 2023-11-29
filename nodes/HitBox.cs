@@ -13,7 +13,11 @@ public partial class HitBox : Area2D
 
     private void _onBodyEntered(Node2D body)
     {
-        Print($"[{Engine.GetPhysicsFrames()}][Hit] {Owner.Name} -> {body.Name} {Owner is Enemy}");
+        Print($"[{Engine.GetPhysicsFrames()}][Hit] {Owner.Name} -> {body.Name}");
+
+        States states = body.GetNode<States>("States");
+        int health = states.OnHit(1);
+        Print($"[{Engine.GetPhysicsFrames()}][States] {body.Name} health -> {health}");
 
         // if (body is PhysicsBody2D)
         // {
