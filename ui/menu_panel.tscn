@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2v3vdoct0vwy"]
+
+[ext_resource type="Script" path="res://ui/MenuPanel.cs" id="1_efr0j"]
+[ext_resource type="Texture2D" uid="uid://b83cp6uuxuhgk" path="res://assets/legacy_fantasy/HUD/Base-01.png" id="1_subg7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr72n"]
+atlas = ExtResource("1_subg7")
+region = Rect2(50, 210, 12, 12)
+
+[node name="MenuPanel" type="HBoxContainer"]
+offset_right = 65.0
+offset_bottom = 31.0
+script = ExtResource("1_efr0j")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Restart"
+icon = SubResource("AtlasTexture_cr72n")
+expand_icon = true

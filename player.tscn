@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d3g7m1xp44x32"]
+[gd_scene load_steps=26 format=3 uid="uid://d3g7m1xp44x32"]
 
 [ext_resource type="Script" path="res://scritps/Player.cs" id="1_qj0fa"]
 [ext_resource type="Texture2D" uid="uid://bx11l3tqqd27d" path="res://assets/generic_char/png/blue/char_blue_2.png" id="2_2wl0b"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://nodes/StateMachine.cs" id="3_y0miy"]
 [ext_resource type="Script" path="res://nodes/States.cs" id="6_xyqv8"]
 [ext_resource type="PackedScene" uid="uid://c4v0s8kq1utm6" path="res://ui/status_panel.tscn" id="7_iv7al"]
+[ext_resource type="PackedScene" uid="uid://d2v3vdoct0vwy" path="res://ui/menu_panel.tscn" id="8_5d8sq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pm4k1"]
 size = Vector2(21.5, 12)
@@ -883,3 +884,9 @@ offset_top = 15.0
 offset_right = 108.0
 offset_bottom = 41.0
 states = NodePath("../../States")
+
+[node name="MenuPanel" parent="CanvasLayer" instance=ExtResource("8_5d8sq")]
+offset_left = 292.0
+offset_top = 9.0
+offset_right = 373.0
+offset_bottom = 40.0
