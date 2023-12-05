@@ -1,3 +1,3 @@
 # HelloGodotDemo
 
-Godot 4.2-rc2
+Godot 4.2
